@@ -1,118 +1,203 @@
-[![NVIDIA Source Code License](https://img.shields.io/badge/license-NSCL-blue.svg)](https://github.com/NVlabs/SegFormer/blob/master/LICENSE)
-![Python 3.8](https://img.shields.io/badge/python-3.8-green.svg)
+# 🧠 Medical Image Segmentation with SegFormer
 
-# SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers
+This repository implements a **SegFormer-based model** for **medical image segmentation**, focusing on tasks such as tumor segmentation from medical imaging (e.g., CT/MRI).
 
-<!-- ![image](resources/image.png) -->
-<div align="center">
-  <img src="./resources/image.png" height="400">
-</div>
-<p align="center">
-  Figure 1: Performance of SegFormer-B0 to SegFormer-B5.
-</p>
+The project is built on top of **PyTorch + MMSegmentation**, and extends SegFormer for domain-specific medical datasets.
 
-### [Project page](https://github.com/NVlabs/SegFormer) | [Paper](https://arxiv.org/abs/2105.15203) | [Demo (Youtube)](https://www.youtube.com/watch?v=J0MoRQzZe8U) | [Demo (Bilibili)](https://www.bilibili.com/video/BV1MV41147Ko/) | [Intro Video](https://www.youtube.com/watch?v=nBjXyoltCHU)
+---
 
-SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers.<br>
-[Enze Xie](https://xieenze.github.io/), [Wenhai Wang](https://whai362.github.io/), [Zhiding Yu](https://chrisding.github.io/), [Anima Anandkumar](http://tensorlab.cms.caltech.edu/users/anima/), [Jose M. Alvarez](https://rsu.data61.csiro.au/people/jalvarez/), and [Ping Luo](http://luoping.me/).<br>
-NeurIPS 2021.
+## 📌 Overview
 
-This repository contains the official Pytorch implementation of training & evaluation code and the pretrained models for [SegFormer](https://arxiv.org/abs/2105.15203).
+* 🎯 Task: Semantic segmentation (medical images)
+* 🧠 Model: SegFormer (Transformer-based segmentation)
+* 📊 Loss: CrossEntropy + Dice Loss
+* 🏥 Domain: Medical imaging (e.g., tumor segmentation)
 
-SegFormer is a simple, efficient and powerful semantic segmentation method, as shown in Figure 1.
+SegFormer is a Transformer-based architecture that combines:
 
-We use [MMSegmentation v0.13.0](https://github.com/open-mmlab/mmsegmentation/tree/v0.13.0) as the codebase.
+* A **hierarchical Transformer encoder**
+* A lightweight **MLP decoder**
 
-🔥🔥 SegFormer is on [MMSegmentation](https://github.com/open-mmlab/mmsegmentation/tree/master/configs/segformer). 🔥🔥 
+This design enables efficient multi-scale feature extraction and strong segmentation performance.
 
+---
 
-## Installation
-
-For install and data preparation, please refer to the guidelines in [MMSegmentation v0.13.0](https://github.com/open-mmlab/mmsegmentation/tree/v0.13.0).
-
-Other requirements:
-```pip install timm==0.3.2```
-
-An example (works for me): ```CUDA 10.1``` and  ```pytorch 1.7.1``` 
+## 📂 Project Structure
 
 ```
-pip install torchvision==0.8.2
-pip install timm==0.3.2
-pip install mmcv-full==1.2.7
-pip install opencv-python==4.5.1.48
-cd SegFormer && pip install -e . --user
+Med_Segformer/
+│
+├── configs/               # Training configs (SegFormer variants)
+├── mmseg/                # Core segmentation framework (modified)
+├── tools/                # Training & testing scripts
+├── datasets/             # Dataset handling (custom)
+├── checkpoints/          # Saved models
+├── work_dirs/            # Training logs & outputs
+├── requirements.txt
+└── README.md
 ```
 
-## Evaluation
+---
 
-Download `trained weights`. 
-(
-[google drive](https://drive.google.com/drive/folders/1GAku0G0iR9DsBxCbfENWMJ27c5lYUeQA?usp=sharing) | 
-[onedrive](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/xieenze_connect_hku_hk/Ept_oetyUGFCsZTKiL_90kUBy5jmPV65O5rJInsnRCDWJQ?e=CvGohw)
-)
+## ⚙️ Installation
 
-Example: evaluate ```SegFormer-B1``` on ```ADE20K```:
+### 1. Clone repository
 
-```
-# Single-gpu testing
-python tools/test.py local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py /path/to/checkpoint_file
-
-# Multi-gpu testing
-./tools/dist_test.sh local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py /path/to/checkpoint_file <GPU_NUM>
-
-# Multi-gpu, multi-scale testing
-tools/dist_test.sh local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py /path/to/checkpoint_file <GPU_NUM> --aug-test
+```bash
+git clone https://github.com/Buicongbang04/Med_Segformer.git
+cd Med_Segformer
 ```
 
-## Training
+---
 
-Download `weights` 
-(
-[google drive](https://drive.google.com/drive/folders/1b7bwrInTW4VLEm27YawHOAMSMikga2Ia?usp=sharing) | 
-[onedrive](https://connecthkuhk-my.sharepoint.com/:f:/g/personal/xieenze_connect_hku_hk/EvOn3l1WyM5JpnMQFSEO5b8B7vrHw9kDaJGII-3N9KNhrg?e=cpydzZ)
-) 
-pretrained on ImageNet-1K, and put them in a folder ```pretrained/```.
+### 2. Create environment (recommended)
 
-Example: train ```SegFormer-B1``` on ```ADE20K```:
-
-```
-# Single-gpu training
-python tools/train.py local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py 
-
-# Multi-gpu training
-./tools/dist_train.sh local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py <GPU_NUM>
+```bash
+conda create -n segformer python=3.8 -y
+conda activate segformer
 ```
 
-## Visualize
+---
 
-Here is a demo script to test a single image. More details refer to [MMSegmentation's Doc](https://mmsegmentation.readthedocs.io/en/latest/get_started.html).
+### 3. Install dependencies
 
-```shell
-python demo/image_demo.py ${IMAGE_FILE} ${CONFIG_FILE} ${CHECKPOINT_FILE} [--device ${DEVICE_NAME}] [--palette-thr ${PALETTE}]
+```bash
+pip install -r requirements.txt
 ```
 
-Example: visualize ```SegFormer-B1``` on ```CityScapes```: 
+If using GPU:
 
-```shell
-python demo/image_demo.py demo/demo.png local_configs/segformer/B1/segformer.b1.512x512.ade.160k.py \
-/path/to/checkpoint_file --device cuda:0 --palette cityscapes
+```bash
+pip install mmcv-full==1.2.7 -f https://download.openmmlab.com/mmcv/dist/cu102/torch1.8.1/index.html
 ```
 
+---
 
+## 📊 Dataset Preparation
 
+Prepare dataset in segmentation format:
 
-
-## License
-Please check the LICENSE file. SegFormer may be used non-commercially, meaning for research or 
-evaluation purposes only. For business inquiries, please visit our website and submit the form: [NVIDIA Research Licensing](https://www.nvidia.com/en-us/research/inquiries/).
-
-
-## Citation
 ```
-@inproceedings{xie2021segformer,
-  title={SegFormer: Simple and Efficient Design for Semantic Segmentation with Transformers},
-  author={Xie, Enze and Wang, Wenhai and Yu, Zhiding and Anandkumar, Anima and Alvarez, Jose M and Luo, Ping},
-  booktitle={Neural Information Processing Systems (NeurIPS)},
-  year={2021}
-}
+data/
+├── images/
+│   ├── train/
+│   ├── val/
+├── masks/
+│   ├── train/
+│   ├── val/
 ```
+
+* `images`: input images
+* `masks`: ground truth segmentation
+* Masks should be **grayscale (0 = background, 1 = tumor)**
+
+---
+
+## 🚀 Training
+
+### Single GPU
+
+```bash
+python tools/train.py configs/your_config.py
+```
+
+### Multi-GPU
+
+```bash
+./tools/dist_train.sh configs/your_config.py 2
+```
+
+---
+
+## 📈 Evaluation
+
+```bash
+python tools/test.py configs/your_config.py checkpoints/latest.pth
+```
+
+Metrics:
+
+* mIoU
+* Dice Score (important for medical segmentation)
+
+---
+
+## 🧪 Inference (Demo)
+
+```bash
+python demo/image_demo.py \
+    demo/test.png \
+    configs/your_config.py \
+    checkpoints/latest.pth \
+    --device cuda:0
+```
+
+---
+
+## ⚙️ Custom Loss
+
+Project uses:
+
+* CrossEntropy Loss
+* Dice Loss
+
+```python
+Loss = CE + Dice
+```
+
+Dice is critical because:
+
+* Tumor regions are small
+* Background dominates
+
+---
+
+## 🧠 Model Details
+
+SegFormer consists of:
+
+1. **Encoder (MiT - Mix Vision Transformer)**
+2. **Multi-scale feature extraction**
+3. **MLP Decoder (lightweight)**
+
+Pipeline:
+
+```
+Image → Transformer Encoder → Multi-scale Features
+      → MLP Decoder → Segmentation Map
+```
+
+---
+
+## 📌 Notes
+
+* acc_seg is not important for medical segmentation
+* Focus on:
+
+  * Dice Score
+  * Tumor Dice (per class)
+* Class imbalance is a major issue → tune loss carefully
+
+---
+
+## 🧪 Tips for Better Results
+
+* ✔ Increase Dice weight
+* ✔ Use small batch size (2–4)
+* ✔ Normalize input images
+* ✔ Use pretrained backbone
+* ✔ Apply augmentation (flip, rotate)
+
+---
+
+## 📜 Acknowledgements
+
+* SegFormer (NeurIPS 2021)
+* MMSegmentation framework
+
+---
+
+## 📧 Contact
+
+Author: Bui Cong Bang
+GitHub: https://github.com/Buicongbang04
