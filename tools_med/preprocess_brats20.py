@@ -1,3 +1,4 @@
+import json
 import os
 import glob
 import argparse
@@ -93,7 +94,15 @@ def save_case_slices(case_dir, out_img_dir, out_mask_dir, skip_empty=True):
     return num_saved
 
 
-def split_cases(case_dirs, train_ratio=0.8, val_ratio=0.1, seed=42):
+def split_cases(case_dirs, split_file=None, train_ratio=0.8, val_ratio=0.1, seed=42):
+    if split_file and os.path.exists(split_file):
+        with open(split_file, 'r') as f:
+            info = json.load(f).get('splits', {})
+            train_cases = info.get('train', [])
+            val_cases = info.get('val', [])
+            test_cases = info.get('test', [])
+            return train_cases, val_cases, test_cases
+        
     random.seed(seed)
     case_dirs = sorted(case_dirs)
     random.shuffle(case_dirs)
@@ -124,9 +133,7 @@ def main():
 
     train_cases, val_cases, test_cases = split_cases(
         case_dirs,
-        train_ratio=0.8,
-        val_ratio=0.1,
-        seed=args.seed
+        split_file='data/brain_info.json',
     )
 
     splits = {
