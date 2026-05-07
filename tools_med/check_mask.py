@@ -1,6 +1,6 @@
 import cv2, glob, numpy as np
 
-paths = glob.glob("data/medical_seg/brain/annotations/train/*.png")
+paths = glob.glob("/home/bangbc/Documents/CapstoneProject/ThesisProject26_v2/work_dirs/brats20_b1/preds/preds_mask/*.png")
 
 count_tumor = 0
 for p in paths:

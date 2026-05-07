@@ -12,6 +12,9 @@ from mmseg.datasets import build_dataloader, build_dataset
 from mmseg.models import build_segmentor
 from IPython import embed
 
+import warnings
+warnings.filterwarnings("ignore")
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='mmseg test (and eval) a model')
@@ -30,7 +33,7 @@ def parse_args():
         '--eval',
         type=str,
         nargs='+',
-        default='mIoU',
+        default='mDice',
         help='evaluation metrics, which depends on the dataset, e.g., "mIoU"'
         ' for generic datasets, and "cityscapes" for Cityscapes')
     parser.add_argument('--show', action='store_true', help='show results')
@@ -134,7 +137,7 @@ def main():
     model.CLASSES = checkpoint['meta']['CLASSES']
     model.PALETTE = checkpoint['meta']['PALETTE']
 
-    efficient_test = True #False
+    efficient_test = False #True
     if args.eval_options is not None:
         efficient_test = args.eval_options.get('efficient_test', False)
 
@@ -153,7 +156,7 @@ def main():
     rank, _ = get_dist_info()
     if rank == 0:
         if args.out:
-            print(f'\nwriting results to {args.out}')
+            print(f'\nWriting results to {args.out}')
             mmcv.dump(outputs, args.out)
         kwargs = {} if args.eval_options is None else args.eval_options
         if args.format_only:
