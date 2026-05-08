@@ -23,7 +23,7 @@ DEFAULT_LIVER_WINDOW = (-200.0, 250.0)
 LITS_TUMOR_LABEL_THRESHOLD = 1
 
 
-def normalize_ct_medsam(volume, hu_min=-200.0, hu_max=250.0):
+def normalize_ct(volume, hu_min=-200.0, hu_max=250.0):
     if hu_max <= hu_min:
         raise ValueError(f"hu_max must be greater than hu_min, got {hu_min}, {hu_max}")
 
@@ -132,7 +132,7 @@ def save_case_slices(
         print(f"[SKIP] {case_name}: CT/label shape mismatch {image.shape} vs {label.shape}")
         return [], 0
 
-    image = normalize_ct_medsam(image, hu_min=hu_min, hu_max=hu_max)
+    image = normalize_ct(image, hu_min=hu_min, hu_max=hu_max)
 
     # LiTS17:
     # 0 = background

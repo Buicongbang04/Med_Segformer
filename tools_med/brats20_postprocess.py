@@ -329,7 +329,7 @@ def main():
     parser.add_argument("--allow-noncontiguous", action="store_true", help="Allow non-contiguous slices. Not recommended for 3D Dice/volume.")
     args = parser.parse_args()
 
-    # mask_pred_dir = os.path.join(args.pred_dir, "preds_mask")
+    mask_pred_dir = os.path.join(args.pred_dir)
 
     if not args.skip_predict:
         mask_pred_dir = run_mmseg_prediction(
@@ -346,12 +346,11 @@ def main():
         require_contiguous=not args.allow_noncontiguous,
     )
 
-    # os.makedirs(os.path.dirname(args.out_csv), exist_ok=True) if os.path.dirname(args.out_csv) else None
-    # df.to_csv(args.out_csv, index=False)
+    os.makedirs(os.path.dirname(args.out_csv), exist_ok=True) if os.path.dirname(args.out_csv) else None
+    df.to_csv(args.out_csv, index=False)
 
     summary = summarize(df)
     print_summary(summary)
-    # print(f"\nSaved per-case results to: {args.out_csv}")
 
 
 if __name__ == "__main__":

@@ -196,7 +196,7 @@ def run_mmseg_prediction(config, checkpoint, pred_dir, clean_pred_dir=True):
 
     os.makedirs(pred_dir, exist_ok=True)
 
-    mask_dir = os.path.join(pred_dir, "preds_mask")
+    mask_dir = os.path.join(pred_dir)
     os.makedirs(mask_dir, exist_ok=True)
 
     cfg = Config.fromfile(config)
@@ -445,7 +445,7 @@ def main():
 
     args = parser.parse_args()
 
-    mask_pred_dir = os.path.join(args.pred_dir, "preds_mask")
+    mask_pred_dir = os.path.join(args.pred_dir)
 
     if not args.skip_predict:
         mask_pred_dir = run_mmseg_prediction(
@@ -462,10 +462,10 @@ def main():
         require_contiguous=not args.allow_noncontiguous,
     )
 
-    # if os.path.dirname(args.out_csv):
-    #     os.makedirs(os.path.dirname(args.out_csv), exist_ok=True)
+    if os.path.dirname(args.out_csv):
+        os.makedirs(os.path.dirname(args.out_csv), exist_ok=True)
 
-    # df.to_csv(args.out_csv, index=False)
+    df.to_csv(args.out_csv, index=False)
 
     summary = summarize(df)
     print_summary(summary)
