@@ -329,7 +329,7 @@ def main():
     parser.add_argument("--allow-noncontiguous", action="store_true", help="Allow non-contiguous slices. Not recommended for 3D Dice/volume.")
     args = parser.parse_args()
 
-    mask_pred_dir = os.path.join(args.pred_dir, "preds_mask")
+    # mask_pred_dir = os.path.join(args.pred_dir, "preds_mask")
 
     if not args.skip_predict:
         mask_pred_dir = run_mmseg_prediction(
