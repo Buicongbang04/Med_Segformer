@@ -1,7 +1,7 @@
-python tools_med/lits17_inference.py \
-  --nifti data/LITS17/volume-100.nii \
-  --config local_configs/segformer/B1/segformer.b1.512x512.lits17.py \
-  --checkpoint work_dirs/liver_b1/trains/iter_80000.pth \
-  --out-root work_dirs/liver_b1/infer \
+python tools_med/msd07_inference.py \
+  --nifti data/Pancreas/imagesTr/pancreas_050.nii.gz \
+  --config local_configs/segformer/B1/segformer.b1.512x512.msd07.py \
+  --checkpoint work_dirs/msd07_b1/trains/iter_60000.pth \
+  --out-root work_dirs/msd07_b1/infer \
   --device cuda:0 \
   --clean
