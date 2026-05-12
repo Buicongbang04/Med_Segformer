@@ -18,14 +18,10 @@ from tqdm import tqdm
 
 IMAGE_EXT = ".png"
 
-DEFAULT_PANCREAS_WINDOW = (-125.0, 275.0)
-
-# Ablation options:
-# ABLATION_PANCREAS_WINDOW_1 = (-100.0, 240.0)
-# ABLATION_PANCREAS_WINDOW_2 = (-150.0, 250.0)
+DEFAULT_PANCREAS_WINDOW = (-175.0, 175.0)
 
 
-def normalize_ct_medsam(volume, hu_min=-125.0, hu_max=275.0):
+def normalize_ct_medsam(volume, hu_min=-175.0, hu_max=175.0):
     """
     CT normalization following MedSAM-style windowing:
         1. clip HU
@@ -272,8 +268,8 @@ def save_case_slices(
     out_mask_dir,
     split,
     target_mode,
-    hu_min=-125.0,
-    hu_max=275.0,
+    hu_min=-175.0,
+    hu_max=175.0,
     keep_empty_all=False,
     empty_keep_prob=0.4,
 ):

@@ -22,8 +22,8 @@ from mmseg.models import build_segmentor
 
 IMAGE_EXT = ".png"
 
-DEFAULT_HU_MIN = -125.0
-DEFAULT_HU_MAX = 275.0
+DEFAULT_HU_MIN = -175.0
+DEFAULT_HU_MAX = 175.0
 
 
 def strip_nii_suffix(path):
@@ -54,8 +54,8 @@ def infer_case_id(nifti_path):
 
 def normalize_ct_medsam(
     volume,
-    hu_min=-125.0,
-    hu_max=275.0,
+    hu_min=-175.0,
+    hu_max=175.0,
 ):
     """
     Pancreas CT preprocessing.
