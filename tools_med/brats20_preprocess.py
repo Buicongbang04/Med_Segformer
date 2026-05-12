@@ -16,19 +16,6 @@ IMAGE_EXT = ".png"
 
 
 def normalize_brats_flair(volume):
-    """
-    BraTS MRI FLAIR preprocessing.
-
-    Medical-safe rule:
-    - foreground = intensity > 0
-    - percentile clipping on foreground only
-    - z-score using foreground only
-    - clip [-5, 5]
-    - rescale to [0, 1]
-    - background set back to 0
-
-    This is 3D volume-level normalization, NOT per-slice normalization.
-    """
     volume = volume.astype(np.float32)
     foreground = volume > 0
 
