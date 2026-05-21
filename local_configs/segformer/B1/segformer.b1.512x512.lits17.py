@@ -25,13 +25,6 @@ model = dict(
         norm_cfg=norm_cfg,
         align_corners=False,
         decoder_params=dict(embed_dim=256),
-        # CrossEntropyLoss
-        # loss_decode=dict(
-        #     type='CrossEntropyLoss', 
-        #     use_sigmoid=False, 
-        #     loss_weight=1.0)),
-
-        # CrossEntropyLoss + DiceLoss
         loss_decode=dict(
             type='CrossEntropyDiceLoss',
             ce_cfg=dict(
@@ -40,26 +33,6 @@ model = dict(
                 loss_weight=1.0),
             dice_weight=2.0
         )),
-
-        # FocalTversky and DiceLoss
-        # loss_decode=dict(
-        #     type='FocalTverskyDiceLoss',
-        #     alpha=0.7,
-        #     beta=0.3,
-        #     gamma=0.75,
-        #     loss_weight=1.0
-        # )),
-
-        # FocalTversky, DiceLoss and Boundary Loss
-        # loss_decode=dict(
-        #     type='FocalTverskyDiceBoundaryLoss',
-        #     alpha=0.7,
-        #     beta=0.3,
-        #     gamma=0.75,
-        #     lambda_dice=2.0,
-        #     lambda_boundary=1.0
-        # )),
-    # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
 

@@ -1,5 +1,5 @@
 dataset_type = 'CustomDataset'
-data_root = 'data/medical_seg/brain'
+data_root = 'data/cross_validation/brats20/fold_4'
 
 img_norm_cfg = dict(
     mean=[0, 0, 0],

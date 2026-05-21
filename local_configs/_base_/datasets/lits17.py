@@ -1,5 +1,6 @@
 dataset_type = 'CustomDataset'
-data_root = 'data/medical_seg/liver'
+# data_root = 'data/medical_seg/liver'
+data_root = 'data/cross_validation/lits17/fold_1'
 
 img_norm_cfg = dict(
     mean=[0, 0, 0],
